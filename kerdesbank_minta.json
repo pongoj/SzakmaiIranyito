@@ -1,0 +1,15 @@
+[
+  {
+    "id": "sajat_001",
+    "subject": "Jogi ismeretek",
+    "q": "Minta importálható kérdés?",
+    "options": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "answer": "B",
+    "explanation": "Ilyen szerkezetben lehet saját kérdéseket hozzáadni."
+  }
+]

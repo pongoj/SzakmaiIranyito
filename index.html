@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Árufuvarozó szakmai irányító – vizsgagyakorló</title>
+<style>
+:root{--navy:#0f2747;--teal:#0f766e;--bg:#f3f7f9;--line:#dbe5ea;--muted:#64748b;--good:#15803d;--bad:#b91c1c;--warn:#b45309}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#eef7f6,#f6f8fa 360px);color:#132238}
+header{max-width:1100px;margin:auto;padding:32px 24px 16px;display:flex;justify-content:space-between;gap:20px;align-items:flex-start}
+h1{margin:2px 0 0;font-size:clamp(28px,4vw,46px);line-height:1.05;color:var(--navy)}header p{margin:7px 0;color:var(--teal);font-weight:700;font-size:18px}
+.eyebrow{font-size:12px;letter-spacing:.16em;font-weight:800;color:var(--teal)}.pill{background:#dff5f0;border:1px solid #b5e4da;padding:9px 13px;border-radius:999px;color:#0a645d;font-weight:700;font-size:13px}
+main{max-width:1100px;margin:auto;padding:16px 24px 40px}.card{background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:0 12px 40px rgba(20,45,70,.08);padding:28px}.hidden{display:none!important}
+.grid2{display:grid;grid-template-columns:1.15fr .85fr;gap:34px}h2{margin-top:0;color:var(--navy);font-size:28px}h3{color:var(--navy)}
+label{display:block;font-weight:750;margin:18px 0 8px;color:#233a55}select{width:100%;padding:13px 14px;border:1px solid #c9d7df;border-radius:11px;background:white;font:inherit}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.vertical{flex-direction:column}
+button{border:0;border-radius:11px;padding:12px 16px;font:inherit;font-weight:800;cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}.primary{background:var(--teal);color:white}.secondary{background:#e8f0f4;color:#18344f}.danger{background:#fee2e2;color:#991b1b}
+.note,.info{font-size:14px;color:var(--muted);line-height:1.5}.info{background:#f0fdfa;border:1px solid #c9eee7;padding:14px 16px;border-radius:12px;margin-top:22px}
+.stats{background:#f8fbfc;border:1px solid #e1eaee;border-radius:16px;padding:20px}.stat{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #e5edf1}.stat strong{color:var(--teal);font-size:20px}
+.quizhead{display:flex;justify-content:space-between;gap:20px;align-items:center}.timer{font-size:30px;font-weight:900;color:var(--navy);font-variant-numeric:tabular-nums}.timer.warning{color:var(--warn)}.timer.danger{color:var(--bad)}
+.progress{height:8px;background:#e6edf1;border-radius:999px;overflow:hidden;margin:16px 0 24px}.progress>div{height:100%;background:linear-gradient(90deg,var(--teal),#34c4b5);width:0}
+.question h3{font-size:23px;line-height:1.35;margin-bottom:22px}.options{display:grid;gap:11px}.option{width:100%;text-align:left;background:#f6f9fb;border:1px solid #d7e2e8;color:#14263a;padding:14px 16px;border-radius:12px;font-weight:650}
+.option.selected{background:#dff5f0;border-color:#69c7b9}.option.correct{background:#dcfce7;border-color:#76d394;color:#14532d}.option.wrong{background:#fee2e2;border-color:#f2a7a7;color:#7f1d1d}
+.feedback{margin-top:17px;padding:14px 16px;border-radius:12px;line-height:1.5}.feedback.good{background:#ecfdf5;border:1px solid #bbf7d0;color:#14532d}.feedback.bad{background:#fff1f2;border:1px solid #fecdd3;color:#881337}.quizactions{justify-content:space-between}
+.resultHero{display:flex;align-items:center;justify-content:space-between;gap:24px}.score{width:130px;height:130px;border-radius:50%;display:grid;place-items:center;background:#e6f7f4;border:10px solid #83d4c8;color:var(--navy);font-size:30px;font-weight:950}
+.breakdown{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:20px 0}.mini{border:1px solid #e0e9ed;border-radius:12px;padding:12px;background:#fafcfd}
+.reviewItem{border:1px solid #e2e8f0;border-radius:13px;padding:16px;margin:11px 0}.reviewItem .q{font-weight:800;margin-bottom:8px}.badans{color:var(--bad)}.goodans{color:var(--good)}.explain{color:#475569;margin-top:8px;line-height:1.45}
+footer{padding:0 24px 28px;text-align:center;color:#718096;font-size:13px}
+@media(max-width:760px){header{display:block}.pill{display:inline-block;margin-top:10px}.grid2{grid-template-columns:1fr}.card{padding:20px}.resultHero{align-items:flex-start}.score{width:100px;height:100px;font-size:24px;border-width:8px}.question h3{font-size:20px}}
+</style>
+</head>
+<body>
+<header>
+  <div><div class="eyebrow">FELÚJÍTÓ VIZSGA • 2026</div><h1>Árufuvarozó szakmai irányító</h1><p>Online gyakorló és vizsgaszimulátor</p></div>
+  <div class="pill">GitHub Pages kompatibilis</div>
+</header>
+<main>
+<section id="home" class="card">
+  <div class="grid2">
+    <div>
+      <h2>Új gyakorlás</h2>
+      <label>Témakör<select id="subject"></select></label>
+      <label>Mód<select id="mode"><option value="exam">Vizsgamód – eredmény csak a végén</option><option value="practice">Gyakorlómód – azonnali magyarázattal</option></select></label>
+      <label>Kérdések száma<select id="count"><option>10</option><option selected>20</option><option>40</option><option value="all">Összes elérhető</option></select></label>
+      <div class="actions"><button id="start" class="primary">Teszt indítása</button><button id="wrongStart" class="secondary">Korábbi hibák gyakorlása</button></div>
+      <p class="note">Vizsgamódban 20 kérdésnél 20 percet kapsz. A kérdés- és válaszsorrend minden alkalommal keveredik.</p>
+    </div>
+    <div class="stats">
+      <h3>Statisztika ezen az eszközön</h3>
+      <div class="stat"><span>Kitöltött tesztek</span><strong id="histCount">0</strong></div>
+      <div class="stat"><span>Legjobb eredmény</span><strong id="best">–</strong></div>
+      <div class="stat"><span>Eltárolt hibás kérdések</span><strong id="wrongCount">0</strong></div>
+      <div class="actions vertical">
+        <button id="export" class="secondary">Eredmények exportálása CSV-be</button>
+        <button id="import" class="secondary">Kérdésbank importálása JSON-ból</button>
+        <input id="file" type="file" accept=".json,application/json" hidden>
+        <button id="reset" class="danger">Helyi eredmények törlése</button>
+      </div>
+    </div>
+  </div>
+  <div class="info"><strong>Fontos:</strong> ez nem hivatalos KAV vizsgafelület. A beépített kérdések tanulási célú mintakérdések, a kérdésbank később JSON-fájlból bővíthető.</div>
+</section>
+
+<section id="quiz" class="card hidden">
+  <div class="quizhead"><div><div id="quizSubject" class="eyebrow"></div><h2 id="progressText"></h2></div><div id="timer" class="timer">20:00</div></div>
+  <div class="progress"><div id="bar"></div></div>
+  <article class="question"><h3 id="question"></h3><div id="options" class="options"></div><div id="feedback" class="feedback hidden"></div></article>
+  <div class="actions quizactions"><button id="quit" class="secondary">Kilépés</button><button id="next" class="primary" disabled>Következő</button></div>
+</section>
+
+<section id="result" class="card hidden">
+  <div class="resultHero"><div><div class="eyebrow">EREDMÉNY</div><h2 id="resultTitle"></h2><p id="summary"></p></div><div id="score" class="score">0%</div></div>
+  <div id="breakdown" class="breakdown"></div>
+  <h3>Hibás válaszok</h3><div id="review"></div>
+  <div class="actions"><button id="retry" class="primary">Új teszt ugyanebből</button><button id="retryWrong" class="secondary">Csak a hibákat újra</button><button id="homeBtn" class="secondary">Vissza</button></div>
+</section>
+</main>
+<footer>Az eredmények csak a saját böngésződben tárolódnak • statikus webapp • szerveroldali adatküldés nincs</footer>
+
+<script>
+const DEFAULT_QUESTIONS = [
+{id:"j1",subject:"Jogi ismeretek",q:"Melyik uniós rendelet tartalmazza a közúti fuvarozói szakmához való hozzáférés alapfeltételeit?",options:["1071/2009/EK","1072/2009/EK","561/2006/EK","165/2014/EU"],answer:"1071/2009/EK",explanation:"A 1071/2009/EK rendelet szabályozza többek között a letelepedés, jó hírnév, pénzügyi helyzet és szakmai alkalmasság feltételeit."},
+{id:"j2",subject:"Jogi ismeretek",q:"Melyik rendelet szabályozza elsősorban a nemzetközi közúti árufuvarozási piachoz való hozzáférést és a kabotázst?",options:["1072/2009/EK","1071/2009/EK","2002/15/EK","165/2014/EU"],answer:"1072/2009/EK",explanation:"A 1072/2009/EK rendelet tartalmazza a közösségi engedély és a kabotázs fő szabályait."},
+{id:"j3",subject:"Jogi ismeretek",q:"Az engedély adataiban bekövetkező változást Magyarországon főszabály szerint mennyi időn belül kell bejelenteni?",options:["8 nap","15 nap","30 nap","60 nap"],answer:"15 nap",explanation:"A 261/2011. (XII. 7.) Korm. rendelet alapján 15 napon belül kell bejelenteni."},
+{id:"j4",subject:"Jogi ismeretek",q:"3,5 tonna feletti járműveknél mekkora pénzügyi megfelelés szükséges az első járműre?",options:["1 800 EUR","5 000 EUR","9 000 EUR","12 000 EUR"],answer:"9 000 EUR",explanation:"Az első 3,5 t feletti járműre 9 000 EUR, minden további ilyen járműre 5 000 EUR."},
+{id:"j5",subject:"Jogi ismeretek",q:"Egy befejezett nemzetközi fuvar után főszabály szerint hány kabotázsművelet végezhető 7 napon belül?",options:["1","2","3","Korlátlan"],answer:"3",explanation:"A főszabály legfeljebb 3 kabotázsműveletet enged 7 napon belül."},
+{id:"j6",subject:"Jogi ismeretek",q:"Kabotázs után ugyanazzal a járművel ugyanabban a tagállamban mennyi a kötelező lehűlési idő?",options:["24 óra","48 óra","4 nap","7 nap"],answer:"4 nap",explanation:"Ugyanabban a tagállamban ugyanazzal a járművel 4 napos cooling-off időszak van."},
+{id:"j7",subject:"Jogi ismeretek",q:"A jármű 8 hetenkénti kötelező visszatérése a vállalkozás telephelyére jelenleg hatályos uniós előírás?",options:["Igen","Nem"],answer:"Nem",explanation:"Az EU Bírósága 2024-ben megsemmisítette ezt a kötelezettséget."},
+
+{id:"p1",subject:"Gazdasági, pénzügyi és adózási ismeretek",q:"Melyik költség tekinthető tipikusan változó költségnek a fuvarozásban?",options:["Üzemanyag","Éves fix könyvelési díj","Iroda fix bérleti díja","Cégkapu alapdíja"],answer:"Üzemanyag",explanation:"Az üzemanyagköltség a teljesítménnyel és futással együtt változik."},
+{id:"p2",subject:"Gazdasági, pénzügyi és adózási ismeretek",q:"Mit jelent az önköltség?",options:["A szolgáltatás teljesítéséhez kapcsolódó költségek összességét","Csak az üzemanyagköltséget","Csak a lízingdíjat","A számlázott árbevételt"],answer:"A szolgáltatás teljesítéséhez kapcsolódó költségek összességét",explanation:"Az önköltség a szolgáltatás előállításához kapcsolódó releváns költségek összessége."},
+{id:"p3",subject:"Gazdasági, pénzügyi és adózási ismeretek",q:"Mi a likviditás?",options:["A vállalkozás rövid távú fizetőképessége","A járművek átlagéletkora","A bevétel és az ÁFA különbsége","A sofőrök létszáma"],answer:"A vállalkozás rövid távú fizetőképessége",explanation:"A likviditás azt mutatja meg, hogy a vállalkozás képes-e esedékes kötelezettségeit időben teljesíteni."},
+{id:"p4",subject:"Gazdasági, pénzügyi és adózási ismeretek",q:"Ha egy fuvar önköltsége 1 000 EUR és erre 15% felárat teszünk, mennyi lesz a nettó díj?",options:["1 015 EUR","1 100 EUR","1 150 EUR","1 176,47 EUR"],answer:"1 150 EUR",explanation:"1 000 × 1,15 = 1 150 EUR."},
+
+{id:"m1",subject:"Munkaügyi ismeretek",q:"A mobil közúti munkavállaló heti munkaidejének átlaga főszabály szerint legfeljebb mennyi lehet?",options:["40 óra","48 óra","56 óra","60 óra"],answer:"48 óra",explanation:"A referencia-időszakra számított heti átlag legfeljebb 48 óra lehet."},
+{id:"m2",subject:"Munkaügyi ismeretek",q:"A heti munkaidő egy adott héten főszabály szerint legfeljebb mennyire emelkedhet, ha az átlag megfelel?",options:["48 óra","56 óra","60 óra","72 óra"],answer:"60 óra",explanation:"A heti munkaidő 60 óráig emelkedhet, ha az előírt időszak átlaga nem haladja meg a 48 órát."},
+{id:"m3",subject:"Munkaügyi ismeretek",q:"Melyik NEM azonos a vezetési idővel?",options:["Munkaidő","Kormány mögött töltött vezetési idő","Tachográfon vezetésként rögzített idő","Jármű tényleges vezetése"],answer:"Munkaidő",explanation:"A munkaidő tágabb fogalom: vezetésen kívül más munka is beletartozhat."},
+{id:"m4",subject:"Munkaügyi ismeretek",q:"Nemzetközi fuvarnál melyik dokumentum lehet szükséges kiküldetés esetén?",options:["IMI kiküldetési nyilatkozat","Tulajdoni lap","Vámáru-nyilatkozat minden EU-s fuvarnál","ADR igazolás minden rakománynál"],answer:"IMI kiküldetési nyilatkozat",explanation:"A kiküldetési szabályok hatálya alá eső műveleteknél IMI-n keresztüli kiküldetési nyilatkozat szükséges lehet."},
+
+{id:"f1",subject:"Árufuvarozási ismeretek",q:"Mit igazol elsősorban a CMR fuvarlevél?",options:["A fuvarozási szerződés és az áru átvételének körülményeit","Az áru tulajdonjogát","A jármű tulajdonjogát","A vám megfizetését"],answer:"A fuvarozási szerződés és az áru átvételének körülményeit",explanation:"A CMR fuvarlevél fontos bizonyíték, de nem tulajdoni okirat."},
+{id:"f2",subject:"Árufuvarozási ismeretek",q:"A CMR szerinti fuvarozói felelősség tipikus tömegkorlátja elveszés/sérülés esetén mennyi?",options:["2 SDR/kg","5 SDR/kg","8,33 SDR/kg","20 SDR/kg"],answer:"8,33 SDR/kg",explanation:"A főszabály szerinti felső határ 8,33 SDR a hiányzó bruttó tömeg kilogrammjánként."},
+{id:"f3",subject:"Árufuvarozási ismeretek",q:"Mi a rakományrögzítés fő célja?",options:["A rakomány elmozdulásának megakadályozása normál közlekedési igénybevételek mellett","A pótkocsi tömegének növelése","A fuvardíj csökkentése","A CMR kiváltása"],answer:"A rakomány elmozdulásának megakadályozása normál közlekedési igénybevételek mellett",explanation:"A rakományt gyorsítás, fékezés és irányváltás közben fellépő erőkkel szemben biztonságosan rögzíteni kell."},
+{id:"f4",subject:"Árufuvarozási ismeretek",q:"Melyik irat tartozik tipikusan a nemzetközi közúti árufuvarozáshoz?",options:["CMR fuvarlevél","Építési napló","Ingatlan-nyilvántartási szemle","TAJ-kártya"],answer:"CMR fuvarlevél",explanation:"A CMR fuvarlevél tipikus nemzetközi közúti fuvarokmány."},
+
+{id:"t1",subject:"Műszaki, üzemeltetési és közlekedésbiztonsági ismeretek",q:"Mennyi a napi vezetési idő főszabály szerint?",options:["8 óra","9 óra","10 óra","11 óra"],answer:"9 óra",explanation:"A napi vezetési idő főszabály szerint 9 óra, hetente legfeljebb kétszer 10 órára növelhető."},
+{id:"t2",subject:"Műszaki, üzemeltetési és közlekedésbiztonsági ismeretek",q:"Mennyi a heti vezetési idő felső határa?",options:["45 óra","48 óra","56 óra","60 óra"],answer:"56 óra",explanation:"A heti vezetési idő legfeljebb 56 óra."},
+{id:"t3",subject:"Műszaki, üzemeltetési és közlekedésbiztonsági ismeretek",q:"Mennyi lehet két egymást követő hét összes vezetési ideje?",options:["80 óra","90 óra","96 óra","112 óra"],answer:"90 óra",explanation:"Két egymást követő hét vezetési ideje összesen legfeljebb 90 óra."},
+{id:"t4",subject:"Műszaki, üzemeltetési és közlekedésbiztonsági ismeretek",q:"4,5 óra vezetés után mennyi szünet szükséges főszabály szerint?",options:["30 perc","45 perc","60 perc","90 perc"],answer:"45 perc",explanation:"A 45 perces szünet 15 + 30 percre is bontható ebben a sorrendben."},
+{id:"t5",subject:"Műszaki, üzemeltetési és közlekedésbiztonsági ismeretek",q:"Mennyi a rendszeres napi pihenőidő?",options:["9 óra","10 óra","11 óra","12 óra"],answer:"11 óra",explanation:"A rendszeres napi pihenő legalább 11 óra."},
+{id:"t6",subject:"Műszaki, üzemeltetési és közlekedésbiztonsági ismeretek",q:"Mennyi a rendszeres heti pihenőidő?",options:["24 óra","36 óra","45 óra","48 óra"],answer:"45 óra",explanation:"A rendszeres heti pihenő legalább 45 óra."},
+{id:"t7",subject:"Műszaki, üzemeltetési és közlekedésbiztonsági ismeretek",q:"Tölthető-e a rendszeres 45 órás heti pihenő a járműben?",options:["Igen","Nem"],answer:"Nem",explanation:"A rendszeres heti pihenő nem tölthető a járműben."},
+{id:"t8",subject:"Műszaki, üzemeltetési és közlekedésbiztonsági ismeretek",q:"2026. július 1-jétől melyik járműkörre terjed ki az új uniós tachográf- és vezetési/pihenőidő-szabály?",options:["2,5 t feletti, legfeljebb 3,5 t-s járművek nemzetközi árufuvarozásban/kabotázsban","Minden személyautó","Csak belföldi 2 t alatti furgonok","Minden mezőgazdasági gép"],answer:"2,5 t feletti, legfeljebb 3,5 t-s járművek nemzetközi árufuvarozásban/kabotázsban",explanation:"2026. július 1-jétől az érintett LCV-kre G2V2 tachográf és a vezetési/pihenőidő-szabályok vonatkoznak."},
+
+{id:"v1",subject:"Vámismeretek",q:"Mit jelent az import?",options:["Áru behozatala egy vámterületre","Áru kivitele","Belföldi fuvar","Kabotázs"],answer:"Áru behozatala egy vámterületre",explanation:"Importnál az áru egy adott vámterületre belép."},
+{id:"v2",subject:"Vámismeretek",q:"Mit jelent a tranzit vámeljárás lényege?",options:["Áru vámfelügyelet melletti továbbítása egyik pontból a másikba","A fuvarozó cég megszüntetése","Belföldi számlázás","Automatikus ÁFA-visszatérítés"],answer:"Áru vámfelügyelet melletti továbbítása egyik pontból a másikba",explanation:"A tranzit lehetővé teszi az áru vámfelügyelet melletti továbbítását."},
+{id:"v3",subject:"Vámismeretek",q:"Melyik jelölés kapcsolódik tipikusan uniós tranziteljáráshoz?",options:["T1/T2","TAJ","MOT","GKI"],answer:"T1/T2",explanation:"A T1/T2 jelölések az uniós tranziteljárásokhoz kapcsolódnak."},
+{id:"v4",subject:"Vámismeretek",q:"Mi az MRN?",options:["A vám- vagy tranzitnyilatkozat egyedi hivatkozási száma","A sofőr jogosítványszáma","A jármű motorazonosítója","Az üzemanyagkártya PIN-kódja"],answer:"A vám- vagy tranzitnyilatkozat egyedi hivatkozási száma",explanation:"Az MRN (Movement Reference Number) a vámeljárásban használt egyedi hivatkozási szám."}
+];
+
+const $=s=>document.querySelector(s);
+const K={hist:"fuvarHistV1",wrong:"fuvarWrongV1",custom:"fuvarCustomV1"};
+let session=[],idx=0,answers=[],selected=null,mode="exam",config=null,timerHandle=null,seconds=0;
+const esc=s=>String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+const load=(k,d=[])=>{try{return JSON.parse(localStorage.getItem(k)||"null")??d}catch{return d}};
+const save=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+const shuffle=a=>[...a].sort(()=>Math.random()-.5);
+function allQ(){const m=new Map();[...DEFAULT_QUESTIONS,...load(K.custom)].forEach((q,i)=>m.set(q.id||("x"+i),q));return [...m.values()]}
+function subjects(){return ["Összes témakör",...new Set(allQ().map(q=>q.subject))]}
+function fillSubjects(){$("#subject").innerHTML=subjects().map(s=>`<option>${esc(s)}</option>`).join("")}
+function stats(){const h=load(K.hist),w=load(K.wrong);$("#histCount").textContent=h.length;$("#wrongCount").textContent=w.length;$("#best").textContent=h.length?Math.max(...h.map(x=>x.percent))+"%":"–"}
+function show(id){["home","quiz","result"].forEach(x=>$("#"+x).classList.toggle("hidden",x!==id))}
+function pool(subj){const q=allQ();return subj==="Összes témakör"?q:q.filter(x=>x.subject===subj)}
+function start(c=null){
+ config=c||{subject:$("#subject").value,mode:$("#mode").value,count:$("#count").value};
+ mode=config.mode;
+ let p=config.wrongOnly?load(K.wrong).map(id=>allQ().find(q=>q.id===id)).filter(Boolean):pool(config.subject);
+ if(!p.length){alert("Ehhez nincs elérhető kérdés.");return}
+ const n=config.count==="all"?p.length:Math.min(Number(config.count),p.length);
+ session=shuffle(p).slice(0,n).map(q=>({...q,options:shuffle(q.options)}));
+ idx=0;answers=[];selected=null;$("#quizSubject").textContent=(config.wrongOnly?"HIBÁS KÉRDÉSEK":config.subject).toUpperCase();show("quiz");
+ seconds=mode==="exam"?(session.length===20?1200:Math.max(300,session.length*60)):0;
+ clearInterval(timerHandle);
+ if(mode==="exam"){renderTimer();timerHandle=setInterval(()=>{seconds--;renderTimer();if(seconds<=0){clearInterval(timerHandle);finish(true)}},1000)}
+ else{$("#timer").textContent="GYAKORLÁS";$("#timer").className="timer"}
+ renderQ();
+}
+function renderTimer(){const m=Math.floor(seconds/60),s=seconds%60,t=$("#timer");t.textContent=`${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;t.className="timer"+(seconds<=60?" danger":seconds<=180?" warning":"")}
+function renderQ(){
+ selected=null;$("#next").disabled=true;$("#feedback").className="feedback hidden";$("#feedback").innerHTML="";
+ const q=session[idx];$("#progressText").textContent=`${idx+1}. kérdés / ${session.length}`;$("#bar").style.width=`${idx/session.length*100}%`;$("#question").textContent=q.q;$("#options").innerHTML="";
+ q.options.forEach(opt=>{const b=document.createElement("button");b.className="option";b.textContent=opt;b.onclick=()=>choose(opt,b);$("#options").appendChild(b)});
+ $("#next").textContent=idx===session.length-1?"Befejezés":"Következő";
+}
+function choose(opt,b){
+ if(mode==="practice"&&selected!==null)return;selected=opt;[...$("#options").children].forEach(x=>x.classList.remove("selected"));b.classList.add("selected");$("#next").disabled=false;
+ if(mode==="practice"){const q=session[idx],ok=opt===q.answer;[...$("#options").children].forEach(x=>{if(x.textContent===q.answer)x.classList.add("correct");else if(x.textContent===opt&&!ok)x.classList.add("wrong");x.disabled=true});
+ const f=$("#feedback");f.className="feedback "+(ok?"good":"bad");f.innerHTML=`<strong>${ok?"Helyes.":"Nem jó."}</strong><br>${esc(q.explanation||"")}`}
+}
+$("#next").onclick=()=>{if(selected===null)return;answers.push({q:session[idx],chosen:selected,correct:selected===session[idx].answer});if(idx===session.length-1)finish(false);else{idx++;renderQ()}};
+function finish(timed){
+ clearInterval(timerHandle);while(answers.length<session.length){const q=session[answers.length];answers.push({q,chosen:null,correct:false})}show("result");
+ const ok=answers.filter(a=>a.correct).length,p=Math.round(ok/answers.length*100);$("#score").textContent=p+"%";$("#resultTitle").textContent=p>=50?"Sikeres szint":"Még gyakorolni kell";$("#summary").textContent=`${ok}/${answers.length} helyes válasz${timed?" – az idő lejárt.":"."}`;
+ const g={};answers.forEach(a=>{g[a.q.subject]??={ok:0,total:0};g[a.q.subject].total++;if(a.correct)g[a.q.subject].ok++});$("#breakdown").innerHTML=Object.entries(g).map(([s,v])=>`<div class="mini"><strong>${esc(s)}</strong><br>${v.ok}/${v.total} (${Math.round(v.ok/v.total*100)}%)</div>`).join("");
+ const w=answers.filter(a=>!a.correct);$("#review").innerHTML=w.length?w.map((a,i)=>`<div class="reviewItem"><div class="q">${i+1}. ${esc(a.q.q)}</div><div class="badans">Válaszod: ${esc(a.chosen??"nem válaszolt")}</div><div class="goodans">Helyes: ${esc(a.q.answer)}</div><div class="explain">${esc(a.q.explanation||"")}</div></div>`).join(""):"<p>Minden válasz helyes volt.</p>";
+ const ws=new Set(load(K.wrong));w.forEach(a=>ws.add(a.q.id));answers.filter(a=>a.correct).forEach(a=>ws.delete(a.q.id));save(K.wrong,[...ws]);
+ const h=load(K.hist);h.push({date:new Date().toISOString(),subject:config.subject,mode,count:answers.length,correct:ok,percent:p});save(K.hist,h.slice(-200));stats();$("#retryWrong").disabled=!w.length
+}
+$("#start").onclick=()=>start();$("#wrongStart").onclick=()=>{if(!load(K.wrong).length)return alert("Még nincs eltárolt hibás kérdés.");start({subject:"Összes témakör",mode:"practice",count:"all",wrongOnly:true})};
+$("#retry").onclick=()=>start({...config,wrongOnly:false});$("#retryWrong").onclick=()=>start({subject:"Összes témakör",mode:"practice",count:"all",wrongOnly:true});$("#homeBtn").onclick=()=>show("home");
+$("#quit").onclick=()=>{if(confirm("Biztosan kilépsz?")){clearInterval(timerHandle);show("home")}};
+$("#reset").onclick=()=>{if(confirm("Töröljem a helyi eredményeket és hibás kérdéseket?")){localStorage.removeItem(K.hist);localStorage.removeItem(K.wrong);stats()}};
+$("#export").onclick=()=>{const h=load(K.hist);if(!h.length)return alert("Nincs exportálható eredmény.");const rows=[["Dátum","Témakör","Mód","Kérdések","Helyes","Százalék"],...h.map(x=>[x.date,x.subject,x.mode,x.count,x.correct,x.percent])];const csv="\ufeff"+rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(";")).join("\n");download("eredmenyek.csv",csv,"text/csv;charset=utf-8")};
+$("#import").onclick=()=>$("#file").click();$("#file").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const d=JSON.parse(await f.text());if(!Array.isArray(d))throw Error("A JSON gyökerének tömbnek kell lennie.");const valid=d.filter(q=>q&&q.subject&&q.q&&Array.isArray(q.options)&&q.answer&&q.options.includes(q.answer));if(!valid.length)throw Error("Nincs érvényes kérdés.");valid.forEach((q,i)=>q.id||=("custom_"+Date.now()+"_"+i));save(K.custom,[...load(K.custom),...valid]);fillSubjects();alert(valid.length+" kérdés importálva.")}catch(err){alert("Import hiba: "+err.message)}e.target.value=""};
+function download(name,text,type){const b=new Blob([text],{type}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+fillSubjects();stats();
+</script>
+</body>
+</html>
